@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP SJ-43617-SMT-TR
+D 3.5 mm, Right Angle, Mid Mount (SMT), 4 Conductors, 1 Internal Switch, Audio Jack Connector
+K
+F https://www.sameskydevices.com/product/resource/supplyframepdf/sj-4361x-smt.pdf
+$ENDCMP
+#
+#End Doc Library

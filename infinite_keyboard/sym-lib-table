@@ -1,0 +1,11 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "cherry_mx_key")(type "KiCad")(uri "${KIPRJMOD}/libraries/cherry_mx_key.kicad_sym")(options "")(descr ""))
+  (lib (name "ESP32-S3-WROOM-1-N8")(type "KiCad")(uri "${KIPRJMOD}/libraries/ESP32-S3-WROOM-1-N8.kicad_sym")(options "")(descr ""))
+  (lib (name "MIC5504-3_3YM5-TR")(type "KiCad")(uri "${KIPRJMOD}/libraries/MIC5504-3_3YM5-TR.kicad_sym")(options "")(descr ""))
+  (lib (name "MSD-1-A")(type "KiCad")(uri "${KIPRJMOD}/libraries/MSD-1-A.kicad_sym")(options "")(descr ""))
+  (lib (name "PCM5100APWR")(type "KiCad")(uri "${KIPRJMOD}/libraries/PCM5100APWR.kicad_sym")(options "")(descr ""))
+  (lib (name "TPA6130A2RTJR")(type "KiCad")(uri "${KIPRJMOD}/libraries/TPA6130A2RTJR.kicad_sym")(options "")(descr ""))
+  (lib (name "UJ20-C-H-G-SMT-5-P16-TR")(type "KiCad")(uri "${KIPRJMOD}/libraries/UJ20-C-H-G-SMT-5-P16-TR.kicad_sym")(options "")(descr ""))
+  (lib (name "SJ-43617-SMT-TR")(type "KiCad")(uri "${KIPRJMOD}/libraries/SJ-43617-SMT-TR.kicad_sym")(options "")(descr ""))
+)

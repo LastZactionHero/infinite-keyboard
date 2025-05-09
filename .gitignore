@@ -1,0 +1,67 @@
+# Build artifacts
+*.o
+*.elf
+*.bin
+*.hex
+*.map
+*.lst
+*.d
+*.i
+*.s
+*.su
+*.id
+*.lss
+*.sym
+*.lss
+*.eep
+*.hex
+*.bin
+*.elf
+*.map
+*.lst
+*.d
+*.i
+*.s
+*.su
+*.id
+*.lss
+*.sym
+*.lss
+*.eep
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Build directories
+build/
+dist/
+out/
+debug/
+release/
+
+# Dependencies
+node_modules/
+venv/
+__pycache__/
+*.pyc
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Project specific
+*.log
+*.csv
+*.dat
+*.tmp
+*.bak
+*.backup 

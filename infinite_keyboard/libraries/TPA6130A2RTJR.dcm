@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP TPA6130A2RTJR
+D TEXAS INSTRUMENTS - TPA6130A2RTJR . - Audio Power Amplifier, 138 mW, AB, 2 Channel, 2.5V to 5.5V, QFN, 20 Pins
+K
+F https://www.ti.com/lit/ds/symlink/tpa6130a2.pdf
+$ENDCMP
+#
+#End Doc Library

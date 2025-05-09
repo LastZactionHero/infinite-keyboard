@@ -1,0 +1,28 @@
+EESchema-LIBRARY Version 2.3
+#encoding utf-8
+#SamacSys ECAD Model SJ-43617-SMT-TR
+#/972185/1620765/2.50/7/2/Connector
+DEF SJ-43617-SMT-TR J 0 30 Y Y 1 F N
+F0 "J" 1550 300 50 H V L CNN
+F1 "SJ-43617-SMT-TR" 1550 200 50 H V L CNN
+F2 "SJ43617SMTTR" 1550 100 50 H I L CNN
+F3 "https://www.sameskydevices.com/product/resource/supplyframepdf/sj-4361x-smt.pdf" 1550 0 50 H I L CNN
+F4 "3.5 mm, Right Angle, Mid Mount (SMT), 4 Conductors, 1 Internal Switch, Audio Jack Connector" 1550 -100 50 H I L CNN "Description"
+F5 "5.4" 1550 -200 50 H I L CNN "Height"
+F6 "490-SJ-43617-SMT-TR" 1550 -300 50 H I L CNN "Mouser Part Number"
+F7 "https://www.mouser.co.uk/ProductDetail/Same-Sky/SJ-43617-SMT-TR?qs=WyjlAZoYn52vhGUiAWRAtA%3D%3D" 1550 -400 50 H I L CNN "Mouser Price/Stock"
+F8 "Same Sky" 1550 -500 50 H I L CNN "Manufacturer_Name"
+F9 "SJ-43617-SMT-TR" 1550 -600 50 H I L CNN "Manufacturer_Part_Number"
+DRAW
+X SLEEVE 1 1700 0 200 L 50 50 0 0 P
+X TIP 2 0 -200 200 R 50 50 0 0 P
+X RING_1 3 0 -100 200 R 50 50 0 0 P
+X RING_2 4 0 0 200 R 50 50 0 0 P
+X TIP_SWITCH 10 1700 -300 200 L 50 50 0 0 P
+X RING_1_SWITCH 11 1700 -200 200 L 50 50 0 0 P
+X RING_2_SWITCH 12 1700 -100 200 L 50 50 0 0 P
+P 5 0 1 6 200 100 1500 100 1500 -400 200 -400 200 100 N
+ENDDRAW
+ENDDEF
+#
+#End Library
