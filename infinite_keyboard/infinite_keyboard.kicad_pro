@@ -486,7 +486,7 @@
       "idf": "",
       "netlist": "",
       "plot": "../../../Desktop/inifinte_keyboard_plot/",
-      "pos_files": "",
+      "pos_files": "../../../Desktop/",
       "specctra_dsn": "",
       "step": "",
       "svg": "",
@@ -496,7 +496,7 @@
   },
   "schematic": {
     "annotate_start_num": 0,
-    "bom_export_filename": "${PROJECTNAME}.csv",
+    "bom_export_filename": "../../../Desktop/infinite_keyboard.csv",
     "bom_fmt_presets": [],
     "bom_fmt_settings": {
       "field_delimiter": ",",
@@ -558,12 +558,66 @@
           "label": "Datasheet",
           "name": "Datasheet",
           "show": true
+        },
+        {
+          "group_by": false,
+          "label": "Manufacturer_Name",
+          "name": "Manufacturer_Name",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Manufacturer_Part_Number",
+          "name": "Manufacturer_Part_Number",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Mouser Part Number",
+          "name": "Mouser Part Number",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Mouser Price/Stock",
+          "name": "Mouser Price/Stock",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Sim.Device",
+          "name": "Sim.Device",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Sim.Pins",
+          "name": "Sim.Pins",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Height",
+          "name": "Height",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Description",
+          "name": "Description",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "#",
+          "name": "${ITEM_NUMBER}",
+          "show": false
         }
       ],
       "filter_string": "",
       "group_symbols": true,
       "include_excluded_from_bom": true,
-      "name": "Default Editing",
+      "name": "",
       "sort_asc": true,
       "sort_field": "Reference"
     },
@@ -594,16 +648,16 @@
     "meta": {
       "version": 1
     },
-    "net_format_name": "",
+    "net_format_name": "SPICE",
     "page_layout_descr_file": "",
-    "plot_directory": "",
+    "plot_directory": "../",
     "space_save_all_events": true,
-    "spice_current_sheet_as_root": false,
+    "spice_current_sheet_as_root": true,
     "spice_external_command": "spice \"%I\"",
     "spice_model_current_sheet_as_root": true,
-    "spice_save_all_currents": false,
-    "spice_save_all_dissipations": false,
-    "spice_save_all_voltages": false,
+    "spice_save_all_currents": true,
+    "spice_save_all_dissipations": true,
+    "spice_save_all_voltages": true,
     "subpart_first_id": 65,
     "subpart_id_separator": 0
   },

@@ -8,4 +8,6 @@
   (lib (name "TPA6130A2RTJR")(type "KiCad")(uri "${KIPRJMOD}/libraries/TPA6130A2RTJR.kicad_sym")(options "")(descr ""))
   (lib (name "UJ20-C-H-G-SMT-5-P16-TR")(type "KiCad")(uri "${KIPRJMOD}/libraries/UJ20-C-H-G-SMT-5-P16-TR.kicad_sym")(options "")(descr ""))
   (lib (name "SJ-43617-SMT-TR")(type "KiCad")(uri "${KIPRJMOD}/libraries/SJ-43617-SMT-TR.kicad_sym")(options "")(descr ""))
+  (lib (name "AP2112K-3_3TRG1")(type "KiCad")(uri "${KIPRJMOD}/libraries/AP2112K-3_3TRG1.kicad_sym")(options "")(descr ""))
+  (lib (name "AP2112K-3.3TRG1")(type "Legacy")(uri "${KIPRJMOD}/libraries/AP2112K-3.3TRG1.lib")(options "")(descr ""))
 )

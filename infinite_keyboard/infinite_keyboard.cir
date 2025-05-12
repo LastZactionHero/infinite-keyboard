@@ -1,0 +1,213 @@
+.title KiCad schematic
+.model __D21 D
+.model __D7 D
+.model __D8 D
+.model __D2 D
+.model __D1 D
+.model __D14 D
+.model __D13 D
+.model __D24 D
+.model __D22 D
+.model __D18 D
+.model __D23 D
+.model __D17 D
+.model __D19 D
+.model __D20 D
+.model __D6 D
+.model __D12 D
+.model __D5 D
+.model __D11 D
+.model __D16 D
+.model __D15 D
+.model __D10 D
+.model __D9 D
+.model __D4 D
+.model __D3 D
+.save all
+.probe alli
+.probe p(R3)
+.probe p(R4)
+.probe p(D21)
+.probe p(D7)
+.probe p(D8)
+.probe p(D2)
+.probe p(D1)
+.probe p(D14)
+.probe p(D13)
+.probe p(D24)
+.probe p(D22)
+.probe p(D18)
+.probe p(D23)
+.probe p(D17)
+.probe p(D19)
+.probe p(D20)
+.probe p(D6)
+.probe p(D12)
+.probe p(D5)
+.probe p(D11)
+.probe p(D16)
+.probe p(D15)
+.probe p(D10)
+.probe p(D9)
+.probe p(D4)
+.probe p(D3)
+.probe p(R14)
+.probe p(R16)
+.probe p(R17)
+.probe p(R15)
+.probe p(C12)
+.probe p(C13)
+.probe p(C6)
+.probe p(C7)
+.probe p(R22)
+.probe p(R20)
+.probe p(R21)
+.probe p(R19)
+.probe p(C26)
+.probe p(R2)
+.probe p(R18)
+.probe p(C25)
+.probe p(C3)
+.probe p(R23)
+.probe p(R10)
+.probe p(C24)
+.probe p(R12)
+.probe p(R11)
+.probe p(R1)
+.probe p(C1)
+.probe p(C28)
+.probe p(C27)
+.probe p(C22)
+.probe p(C20)
+.probe p(C21)
+.probe p(C23)
+.probe p(C19)
+.probe p(C18)
+.probe p(R8)
+.probe p(R9)
+.probe p(R7)
+.probe p(C17)
+.probe p(C16)
+.probe p(C8)
+.probe p(C10)
+.probe p(C5)
+.probe p(C9)
+.probe p(C11)
+.probe p(C4)
+.probe p(R6)
+.probe p(R5)
+.probe p(C14)
+.probe p(C15)
+R3 GND Net-_J1-CC2_ 5.1k
+J1 __J1
+R4 GND Net-_J1-CC1_ 5.1k
+D21 Net-_D21-A_ ROW3 __D21
+SW21 __SW21
+SW22 __SW22
+D7 Net-_D7-A_ ROW1 __D7
+SW18 __SW18
+D8 Net-_D8-A_ ROW2 __D8
+SW8 __SW8
+SW17 __SW17
+SW1 __SW1
+SW2 __SW2
+D2 Net-_D2-A_ ROW2 __D2
+D1 Net-_D1-A_ ROW1 __D1
+SW7 __SW7
+D14 Net-_D14-A_ ROW2 __D14
+D13 Net-_D13-A_ ROW1 __D13
+D24 Net-_D24-A_ ROW6 __D24
+SW24 __SW24
+D22 Net-_D22-A_ ROW4 __D22
+SW23 __SW23
+D18 Net-_D18-A_ ROW6 __D18
+SW13 __SW13
+D23 Net-_D23-A_ ROW5 __D23
+D17 Net-_D17-A_ ROW5 __D17
+SW14 __SW14
+SW19 __SW19
+D19 Net-_D19-A_ ROW1 __D19
+SW20 __SW20
+D20 Net-_D20-A_ ROW2 __D20
+SW6 __SW6
+D6 Net-_D6-A_ ROW6 __D6
+D12 Net-_D12-A_ ROW6 __D12
+SW12 __SW12
+D5 Net-_D5-A_ ROW5 __D5
+SW5 __SW5
+SW11 __SW11
+D11 Net-_D11-A_ ROW5 __D11
+D16 Net-_D16-A_ ROW4 __D16
+SW15 __SW15
+D15 Net-_D15-A_ ROW3 __D15
+SW16 __SW16
+SW10 __SW10
+D10 Net-_D10-A_ ROW4 __D10
+D9 Net-_D9-A_ ROW3 __D9
+SW9 __SW9
+D4 Net-_D4-A_ ROW4 __D4
+D3 Net-_D3-A_ ROW3 __D3
+SW3 __SW3
+SW4 __SW4
+R14 Net-_RUNNING1-A_ +5V 330
+POWER1 Net-_IC1-IO11_ Net-_POWER1-A_ LED
+R16 Net-_POWER1-A_ +5V 330
+RUNNING1 Net-_IC1-IO10_ Net-_RUNNING1-A_ r="LED"
+MODE_A1 Net-_IC1-IO9_ Net-_MODE_A1-A_ LED
+R17 Net-_MODE_B1-A_ +5V 330
+MODE_B1 Net-_IC1-IO3_ Net-_MODE_B1-A_ LED
+R15 Net-_MODE_A1-A_ +5V 330
+J2 __J2
+IC1 __IC1
+C12 Net-_IC3-LDOO_ GND 0.1u
+C13 GND Net-_IC3-LDOO_ 10u
+C6 +3.3V GND 0.1u
+C7 +3.3V GND 10u
+R22 Net-_IC1-IO47_ Net-_J2-CMD_ 22
+R20 Net-_IC1-IO14_ Net-_J2-DAT0_ 22
+R21 Net-_IC1-IO21_ Net-_J2-CLK_ 22
+R19 +3.3V Net-_IC1-IO45_ 10k
+C26 GND Net-_IC1-IO45_ 1u
+MODE_B2 __MODE_B2
+R2 +3.3V Net-_IC1-IO0_ 10k
+MODE_A2 __MODE_A2
+R18 +3.3V Net-_IC1-IO35_ 10k
+C25 +3.3V Net-_IC1-IO35_ 1u
+C3 Net-_IC1-IO0_ GND 1u
+BOOT1 __BOOT1
+R23 Net-_IC1-IO48_ unconnected-_R23-Pad1_ 22
+R10 Net-_J2-DAT0_ +3.3V 10k
+C24 +3.3V GND 1u
+R12 Net-_J2-CMD_ +3.3V 10k
+R11 Net-_J2-CLK_ +3.3V 10k
+RESET1 __RESET1
+R1 Net-_IC1-EN_ +3.3V 10k
+C1 +3.3V Net-_IC1-EN_ 1u
+IC5 __IC5
+C28 GND +3.3V 1u
+C27 GND +5V 1u
+C22 GND Net-_IC4-LEFTINP_ 0.47u
+C20 Net-_C14-Pad2_ Net-_IC4-LEFTINM_ 0.47u
+C21 Net-_C15-Pad1_ Net-_IC4-RIGHTINM_ 0.47u
+C23 GND Net-_IC4-RIGHTINP_ 0.47u
+C19 GND +5V 1u
+C18 Net-_IC4-CPN_ Net-_IC4-CPP_ 1u
+R8 TPA_SCL +3.3V 4.7k
+R9 TPA_SDA +3.3V 4.7k
+R7 Net-_IC4-_SD_ +5V 10k
+C17 GND Net-_IC4-CPVSS_1_ 1u
+IC4 __IC4
+J3 __J3
+C16 +5V GND 1u
+IC3 __IC3
+C8 +3.3V GND 10u
+C10 Net-_IC3-VNEG_ GND 2.2u
+C5 +3.3V GND 0.1u
+C9 +3.3V GND 10u
+C11 Net-_IC3-CAPP_ Net-_IC3-CAPM_ 2.2u
+C4 +3.3V GND 0.1u
+R6 Net-_IC3-OUTL_ Net-_C15-Pad1_ 470
+R5 Net-_IC3-OUTR_ Net-_C14-Pad2_ 470
+C14 GND Net-_C14-Pad2_ 2.2n
+C15 Net-_C15-Pad1_ GND 2.2n
+.end
