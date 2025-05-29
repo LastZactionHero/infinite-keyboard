@@ -1,10 +1,11 @@
 #include <Arduino.h>
-#include "driver/i2s.h"
-#include <Wire.h>
+#include "driver/i2s.h" // For I2S audio output
+#include <Wire.h>       // For I2C communication with the amplifier
 
 // --- Keyboard Matrix Definitions ---
 const int NUM_ROWS = 6;
 const int NUM_COLS = 4;
+const int NUM_TOTAL_SWITCHES = NUM_ROWS * NUM_COLS; // 24 switches
 
 // Define the GPIO pins for columns (outputs)
 const int colPins[NUM_COLS] = {
@@ -24,49 +25,52 @@ const int rowPins[NUM_ROWS] = {
   1   // ROW 6: IO1
 };
 
-// Array to keep track of the last known state of each key
-bool lastKeyState[NUM_ROWS][NUM_COLS];
-int activeKeyRow = -1;
-int activeKeyCol = -1;
+// --- Switch Enum Definition ---
+typedef enum {
+  SW_INVALID = 0, // Represents an unmapped or invalid switch
+  SW1, SW2, SW3, SW4, SW5, SW6,
+  SW7, SW8, SW9, SW10, SW11, SW12,
+  SW13, SW14, SW15, SW16, SW17, SW18,
+  SW19, SW20, SW21, SW22, SW23, SW24
+} SwitchID_t;
+
+// --- Note Enum Definition ---
+typedef enum {
+  NOTE_NONE = 0, 
+  C4_N, Db4_N, D4_N, Eb4_N, E4_N, F4_N, Gb4_N, G4_N, Ab4_N, A4_N, Bb4_N, B4_N,
+  C5_N, Db5_N, D5_N, Eb5_N, E5_N, F5_N, Gb5_N, G5_N, Ab5_N, A5_N, Bb5_N, B5_N,
+  NOTE_COUNT 
+} Note_t;
 
 // --- Audio Definitions ---
-// I2S Pin Definitions (to PCM5100A DAC)
 #define I2S_BCK_PIN   16 // Bit Clock
 #define I2S_LRCK_PIN  18 // Left/Right Clock (Word Select)
 #define I2S_DIN_PIN   17 // Data Out
 
-// DAC Control Pin (to PCM5100A)
 #define PCM_XSMT_PIN  8  // Soft Mute for DAC (HIGH = un-muted)
 
-// I2C Pin Definitions (to TPA6130A2 Amplifier)
-#define TPA_SCL_PIN   7  // I2C Clock
-#define TPA_SDA_PIN   15 // I2C Data
+#define TPA_SCL_PIN   7  // I2C Clock for TPA6130A2 Amplifier
+#define TPA_SDA_PIN   15 // I2C Data for TPA6130A2 Amplifier
+#define TPA6130A2_ADDR 0x60 // TPA6130A2 I2C Address (ADDR pin LOW)
 
-// TPA6130A2 Amplifier I2C Address
-#define TPA6130A2_ADDR 0x60 // Assuming ADDR pin is LOW
-
-// Audio Parameters
 #define SAMPLE_RATE         44100
 #define BITS_PER_SAMPLE     I2S_BITS_PER_SAMPLE_16BIT
 #define NUM_AUDIO_CHANNELS  I2S_CHANNEL_FMT_RIGHT_LEFT // Stereo
-#define VOLUME_PERCENTAGE   0.15f  // Reduced volume for digital signal to prevent distortion
+#define VOLUME_PERCENTAGE   0.15f  // Adjust as needed
 
-// Buffer for I2S data
-#define I2S_BUFFER_SIZE 256 // Number of stereo samples (L/R pairs)
-int16_t i2s_buffer[I2S_BUFFER_SIZE * 2]; // Buffer for 2 channels
+#define I2S_BUFFER_SIZE 256 
+int16_t i2s_buffer[I2S_BUFFER_SIZE * 2]; 
 
-// Sine wave generation
-float currentPlayingFrequency = 0.0f; // 0.0f means silence
+float currentPlayingFrequency = 0.0f; 
 float phase = 0.0;
 
-// Note frequencies for 2 octaves (24 notes) starting from C4
-const float chromaticScale[24] = {
-  261.63, 277.18, 293.66, 311.13, 329.63, 349.23, 369.99, 392.00, 415.30, 440.00, 466.16, 493.88, // C4 to B4
-  523.25, 554.37, 587.33, 622.25, 659.25, 698.46, 739.99, 783.99, 830.61, 880.00, 932.33, 987.77  // C5 to B5
-};
 
-// 2D array to map physical key [row][col] to a frequency
-float keyToNoteFrequency[NUM_ROWS][NUM_COLS];
+// --- Keyboard State Variables & Mappings ---
+SwitchID_t physicalKeyToSwitchID[NUM_ROWS][NUM_COLS];
+bool currentSwitchIsPressed[NUM_TOTAL_SWITCHES + 1];
+Note_t switchNoteAssignment[NUM_TOTAL_SWITCHES + 1];
+const char* noteEnumToStringMap[NOTE_COUNT];
+float noteEnumToFrequencyMap[NOTE_COUNT];
 
 
 // --- TPA6130A2 Amplifier Control ---
@@ -77,23 +81,15 @@ void set_tpa6130a2_register(uint8_t reg, uint8_t value) {
   byte error = Wire.endTransmission();
   if (error != 0) {
     Serial.print("Error writing to TPA6130A2 register 0x");
-    Serial.print(reg, HEX);
-    Serial.print(": Error code ");
-    Serial.println(error);
+    Serial.print(reg, HEX); Serial.print(": Error code "); Serial.println(error);
   }
 }
 
 void setup_tpa6130a2() {
   Serial.println("Configuring TPA6130A2 Headphone Amplifier...");
-  // Register 1 (0x01): Control Register
-  // Enable Left (Bit 7=1), Enable Right (Bit 6=1), Mode=Stereo (Bits 5:4=00), SWS=0 (Active)
-  set_tpa6130a2_register(0x01, 0xC0); 
+  set_tpa6130a2_register(0x01, 0xC0); // Enable L/R, Stereo
   delay(10); 
-
-  // Register 2 (0x02): Volume and Mute Register
-  // Unmute Left (Bit 7=0), Unmute Right (Bit 6=0)
-  // Set Volume to 0dB: Volume[5:0] = 011100b (28d) -> Value: 00011100b = 0x1C
-  set_tpa6130a2_register(0x02, 0x1C); 
+  set_tpa6130a2_register(0x02, 0x1C); // Unmute L/R, Volume 0dB
   Serial.println("TPA6130A2 configuration complete.");
 }
 
@@ -113,14 +109,12 @@ void setup_i2s() {
     .tx_desc_auto_clear = true,
     .fixed_mclk = 0
   };
-
   i2s_pin_config_t pin_config = {
     .bck_io_num = I2S_BCK_PIN,
     .ws_io_num = I2S_LRCK_PIN,
     .data_out_num = I2S_DIN_PIN,
     .data_in_num = I2S_PIN_NO_CHANGE
   };
-
   if (i2s_driver_install(I2S_NUM_0, &i2s_config, 0, NULL) != ESP_OK) {
     Serial.println("I2S driver install failed"); return;
   }
@@ -133,92 +127,132 @@ void setup_i2s() {
   Serial.println("I2S interface configured.");
 }
 
-// --- Setup Custom Key Mapping ---
-void setupKeyMap() {
-  // Initialize all keys to silence (0.0f frequency)
+
+// --- Mapping Setup Functions ---
+void setupSwitchMapping() {
+  Serial.println("Mapping physical keys to SwitchID enums (manual assignment)...");
   for (int r_init = 0; r_init < NUM_ROWS; r_init++) {
     for (int c_init = 0; c_init < NUM_COLS; c_init++) {
-      keyToNoteFrequency[r_init][c_init] = 0.0f;
+      physicalKeyToSwitchID[r_init][c_init] = SW_INVALID;
     }
   }
+  physicalKeyToSwitchID[0][0] = SW1; physicalKeyToSwitchID[1][0] = SW2; physicalKeyToSwitchID[2][0] = SW3;
+  physicalKeyToSwitchID[3][0] = SW4; physicalKeyToSwitchID[4][0] = SW5; physicalKeyToSwitchID[5][0] = SW6;
+  physicalKeyToSwitchID[0][1] = SW7; physicalKeyToSwitchID[1][1] = SW8; physicalKeyToSwitchID[2][1] = SW9;
+  physicalKeyToSwitchID[3][1] = SW10; physicalKeyToSwitchID[4][1] = SW11; physicalKeyToSwitchID[5][1] = SW12;
+  physicalKeyToSwitchID[0][2] = SW18; physicalKeyToSwitchID[1][2] = SW17; physicalKeyToSwitchID[2][2] = SW16;
+  physicalKeyToSwitchID[3][2] = SW15; physicalKeyToSwitchID[4][2] = SW14; physicalKeyToSwitchID[5][2] = SW13;
+  physicalKeyToSwitchID[0][3] = SW19; physicalKeyToSwitchID[1][3] = SW20; physicalKeyToSwitchID[2][3] = SW21;
+  physicalKeyToSwitchID[3][3] = SW22; physicalKeyToSwitchID[4][3] = SW23; physicalKeyToSwitchID[5][3] = SW24;
 
-  // Populate based on user's mapping (0-indexed rows/cols from user's 1-indexed list)
-  // User list: Note - UserRow, UserCol -> (UserRow-1), (UserCol-1) for 0-indexed array
-  // Frequencies from chromaticScale: C4=0, C#4=1, ..., B4=11, C5=12, ..., B5=23
-
-  keyToNoteFrequency[0][0] = chromaticScale[0];  // C (C4) - row 1, col 1
-  keyToNoteFrequency[1][0] = chromaticScale[1];  // Db
-  keyToNoteFrequency[2][0] = chromaticScale[2];  // D (D4) - row 3, col 1
-  keyToNoteFrequency[3][0] = chromaticScale[3];  // Eb (D#4) - row 4, col 1
-  keyToNoteFrequency[4][0] = chromaticScale[4];  // E (E4) - row 5, col 1
-  keyToNoteFrequency[5][0] = chromaticScale[6];  // Gb (F#4) - row 6, col 1
-  
-  keyToNoteFrequency[0][1] = chromaticScale[7];  // G (G4) - row 2, col 2 (overwrites initial Db if it was here)
-  keyToNoteFrequency[1][1] = chromaticScale[7];  // G (G4) - row 2, col 2 (overwrites initial Db if it was here)
-  keyToNoteFrequency[2][1] = chromaticScale[8];  // Ab (G#4) - row 3, col 2
-  keyToNoteFrequency[3][1] = chromaticScale[9];  // A (A4) - row 4, col 2
-  keyToNoteFrequency[4][1] = chromaticScale[10]; // Bb (A#4) - row 5, col 2
-  keyToNoteFrequency[5][1] = chromaticScale[11]; // B (B4) - row 6, col 2
-
-  keyToNoteFrequency[0][2] = chromaticScale[18]; // Gb (F#5) - row 1, col 3 (overwrites F4 if it was here)
-  keyToNoteFrequency[1][2] = chromaticScale[16]; // E (E5) - row 2, col 3
-  keyToNoteFrequency[2][2] = chromaticScale[15]; // Eb (D#5) - row 3, col 3
-  keyToNoteFrequency[3][2] = chromaticScale[14]; // D (D5) - row 4, col 3
-  keyToNoteFrequency[4][2] = chromaticScale[13]; // Db (C#5) - row 5, col 3
-  keyToNoteFrequency[5][2] = chromaticScale[12]; // C (C5) "middle c" - row 6, col 3
-
-  keyToNoteFrequency[0][3] = chromaticScale[17]; // F (F5) - row 1, col 4
-  keyToNoteFrequency[1][3] = chromaticScale[19]; // G (G5) - row 2, col 4
-  keyToNoteFrequency[2][3] = chromaticScale[20]; // Ab (G#5) - row 3, col 4
-  keyToNoteFrequency[3][3] = chromaticScale[21]; // A (A5) - row 4, col 4
-  keyToNoteFrequency[4][3] = chromaticScale[22]; // Bb (A#5) - row 5, col 4
-  keyToNoteFrequency[5][3] = chromaticScale[23]; // B (B5) - row 6, col 4
-
-  // Handling the collisions based on "last one specified wins":
-  // Original user list:
-  // Db - row 2, col 2 (keyToNoteFrequency[1][1] = chromaticScale[1])
-  // G  - row 2, col 2 (keyToNoteFrequency[1][1] = chromaticScale[7]) -> G4 wins
-  // F  - row 1, col 3 (keyToNoteFrequency[0][2] = chromaticScale[5])
-  // Gb - row 1, col 3 (keyToNoteFrequency[0][2] = chromaticScale[18]) -> Gb5 wins
-
-  // So the direct assignments above already reflect the "last wins" for the collisions.
-  // Notes Db4 (index 1) and F4 (index 5) from chromaticScale are effectively not directly playable
-  // with this specific layout due to G4 and Gb5 overwriting their physical key positions.
+  Serial.println("VERIFY: Current physical key to Switch ID mapping:");
+  for (int r_verify = 0; r_verify < NUM_ROWS; r_verify++) {
+    String rowString = "  Row " + String(r_verify) + ": ";
+    for (int c_verify = 0; c_verify < NUM_COLS; c_verify++) {
+      SwitchID_t sw = physicalKeyToSwitchID[r_verify][c_verify];
+      rowString += "C" + String(c_verify) + "=" + (sw != SW_INVALID ? "SW" + String(static_cast<int>(sw)) : "N/A") + "   ";
+    }
+    Serial.println(rowString);
+  }
 }
 
+void initializeNoteStrings() {
+  Serial.println("Initializing Note Enum to String map...");
+  for(int i=0; i < NOTE_COUNT; ++i) noteEnumToStringMap[i] = "N/A";
+  noteEnumToStringMap[C4_N] = "C4"; noteEnumToStringMap[Db4_N] = "Db4"; noteEnumToStringMap[D4_N] = "D4";
+  noteEnumToStringMap[Eb4_N] = "Eb4"; noteEnumToStringMap[E4_N] = "E4"; noteEnumToStringMap[F4_N] = "F4";
+  noteEnumToStringMap[Gb4_N] = "Gb4"; noteEnumToStringMap[G4_N] = "G4"; noteEnumToStringMap[Ab4_N] = "Ab4";
+  noteEnumToStringMap[A4_N] = "A4"; noteEnumToStringMap[Bb4_N] = "Bb4"; noteEnumToStringMap[B4_N] = "B4";
+  noteEnumToStringMap[C5_N] = "C5"; noteEnumToStringMap[Db5_N] = "Db5"; noteEnumToStringMap[D5_N] = "D5";
+  noteEnumToStringMap[Eb5_N] = "Eb5"; noteEnumToStringMap[E5_N] = "E5"; noteEnumToStringMap[F5_N] = "F5";
+  noteEnumToStringMap[Gb5_N] = "Gb5"; noteEnumToStringMap[G5_N] = "G5"; noteEnumToStringMap[Ab5_N] = "Ab5";
+  noteEnumToStringMap[A5_N] = "A5"; noteEnumToStringMap[Bb5_N] = "Bb5"; noteEnumToStringMap[B5_N] = "B5";
+  
+  Serial.println("VERIFY: Note Enum to String mapping:");
+  for (int i = 1; i < NOTE_COUNT; i++) {
+      Serial.print("  NoteEnumVal "); Serial.print(i); Serial.print(" (");
+      Serial.print(noteEnumToStringMap[static_cast<Note_t>(i)]); Serial.println(")");
+  }
+}
+
+void setupNoteMapping() {
+  Serial.println("Mapping SwitchIDs to Note_t enums (manual assignment)...");
+  for (int i = 0; i <= NUM_TOTAL_SWITCHES; i++) switchNoteAssignment[i] = NOTE_NONE;
+  switchNoteAssignment[static_cast<int>(SW1)] = C4_N; switchNoteAssignment[static_cast<int>(SW2)] = Db4_N;
+  switchNoteAssignment[static_cast<int>(SW3)] = D4_N; switchNoteAssignment[static_cast<int>(SW4)] = Eb4_N;
+  switchNoteAssignment[static_cast<int>(SW5)] = E4_N; switchNoteAssignment[static_cast<int>(SW6)] = Gb4_N; 
+  switchNoteAssignment[static_cast<int>(SW7)] = F4_N; switchNoteAssignment[static_cast<int>(SW8)] = G4_N;
+  switchNoteAssignment[static_cast<int>(SW9)] = Ab4_N; switchNoteAssignment[static_cast<int>(SW10)] = A4_N;
+  switchNoteAssignment[static_cast<int>(SW11)] = Bb4_N; switchNoteAssignment[static_cast<int>(SW12)] = B4_N;
+  switchNoteAssignment[static_cast<int>(SW13)] = C5_N; switchNoteAssignment[static_cast<int>(SW14)] = Db5_N;
+  switchNoteAssignment[static_cast<int>(SW15)] = D5_N; switchNoteAssignment[static_cast<int>(SW16)] = Eb5_N;
+  switchNoteAssignment[static_cast<int>(SW17)] = E5_N; switchNoteAssignment[static_cast<int>(SW18)] = Gb5_N; 
+  switchNoteAssignment[static_cast<int>(SW19)] = F5_N; switchNoteAssignment[static_cast<int>(SW20)] = G5_N;
+  switchNoteAssignment[static_cast<int>(SW21)] = Ab5_N; switchNoteAssignment[static_cast<int>(SW22)] = A5_N;
+  switchNoteAssignment[static_cast<int>(SW23)] = Bb5_N; switchNoteAssignment[static_cast<int>(SW24)] = B5_N;
+
+  Serial.println("VERIFY: Current Switch ID to Note_t enum mapping:");
+  for (int i = 1; i <= NUM_TOTAL_SWITCHES; i++) {
+    Serial.print("  SW"); Serial.print(i); Serial.print(" -> NoteEnumVal: "); Serial.print(static_cast<int>(switchNoteAssignment[i]));
+    Serial.print(" (String: "); Serial.print(noteEnumToStringMap[switchNoteAssignment[i]]); Serial.println(")");
+  }
+}
+
+void initializeNoteFrequencies() {
+  Serial.println("Initializing Note Enum to Frequency map...");
+  for(int i=0; i < NOTE_COUNT; ++i) noteEnumToFrequencyMap[i] = 0.0f;
+  noteEnumToFrequencyMap[C4_N]  = 261.63f; noteEnumToFrequencyMap[Db4_N] = 277.18f; noteEnumToFrequencyMap[D4_N]  = 293.66f;
+  noteEnumToFrequencyMap[Eb4_N] = 311.13f; noteEnumToFrequencyMap[E4_N]  = 329.63f; noteEnumToFrequencyMap[F4_N]  = 349.23f;
+  noteEnumToFrequencyMap[Gb4_N] = 369.99f; noteEnumToFrequencyMap[G4_N]  = 392.00f; noteEnumToFrequencyMap[Ab4_N] = 415.30f;
+  noteEnumToFrequencyMap[A4_N]  = 440.00f; noteEnumToFrequencyMap[Bb4_N] = 466.16f; noteEnumToFrequencyMap[B4_N]  = 493.88f;
+  noteEnumToFrequencyMap[C5_N]  = 523.25f; noteEnumToFrequencyMap[Db5_N] = 554.37f; noteEnumToFrequencyMap[D5_N]  = 587.33f;
+  noteEnumToFrequencyMap[Eb5_N] = 622.25f; noteEnumToFrequencyMap[E5_N]  = 659.25f; noteEnumToFrequencyMap[F5_N]  = 698.46f;
+  noteEnumToFrequencyMap[Gb5_N] = 739.99f; noteEnumToFrequencyMap[G5_N]  = 783.99f; noteEnumToFrequencyMap[Ab5_N] = 830.61f;
+  noteEnumToFrequencyMap[A5_N]  = 880.00f; noteEnumToFrequencyMap[Bb5_N] = 932.33f; noteEnumToFrequencyMap[B5_N]  = 987.77f;
+
+  Serial.println("VERIFY: Note Enum to Frequency mapping:");
+  for (int i = 1; i < NOTE_COUNT; i++) {
+      Serial.print("  NoteEnumVal "); Serial.print(i); Serial.print(" (");
+      Serial.print(noteEnumToStringMap[static_cast<Note_t>(i)]);
+      Serial.print("): Freq "); Serial.println(noteEnumToFrequencyMap[static_cast<Note_t>(i)], 2);
+  }
+}
 
 // --- Main Setup ---
 void setup() {
   Serial.begin(115200);
-  delay(1000);
+  delay(1000); 
   Serial.println("ESP32-S3 Keyboard Synthesizer Initialized");
 
-  // Initialize keyboard column pins as outputs (initially LOW)
+  // Initialize keyboard column pins
   for (int i = 0; i < NUM_COLS; i++) {
     pinMode(colPins[i], OUTPUT);
     digitalWrite(colPins[i], LOW);
   }
-  // Initialize keyboard row pins as inputs with pull-downs
+  // Initialize keyboard row pins
   for (int i = 0; i < NUM_ROWS; i++) {
     pinMode(rowPins[i], INPUT_PULLDOWN);
   }
-  // Initialize last key states
-  for (int r_idx = 0; r_idx < NUM_ROWS; r_idx++) {
-    for (int c_idx = 0; c_idx < NUM_COLS; c_idx++) {
-      lastKeyState[r_idx][c_idx] = false;
-    }
-  }
 
-  setupKeyMap(); // Populate the keyToNoteFrequency map
+  // Initialize Mappings
+  initializeNoteStrings();     
+  initializeNoteFrequencies(); 
+  setupSwitchMapping();        
+  setupNoteMapping();          
+
+  // Initialize switch states
+  for (int i = 0; i <= NUM_TOTAL_SWITCHES; i++) {
+    currentSwitchIsPressed[i] = false;
+  }
 
   // Configure DAC Mute Pin
   pinMode(PCM_XSMT_PIN, OUTPUT);
   digitalWrite(PCM_XSMT_PIN, HIGH); // Un-mute the DAC
   Serial.println("PCM5100A XSMT pin set HIGH (un-muted).");
 
-  // Initialize I2C for TPA6130A2
+  // Initialize I2C for TPA6130A2 Amplifier
   Wire.begin(TPA_SDA_PIN, TPA_SCL_PIN);
-  Serial.println("I2C interface initialized.");
+  Serial.println("I2C interface initialized for TPA6130A2.");
   setup_tpa6130a2();
 
   // Initialize I2S
@@ -230,42 +264,74 @@ void setup() {
 // --- Main Loop ---
 void loop() {
   // --- Keyboard Scanning ---
-  for (int c = 0; c < NUM_COLS; c++) { // Iterate through columns
-    digitalWrite(colPins[c], HIGH);   // Drive current column HIGH
+  bool keyStateChangedThisScan = false;
+  for (int c = 0; c < NUM_COLS; c++) {
+    digitalWrite(colPins[c], HIGH);
+    delayMicroseconds(50); 
 
-    for (int r = 0; r < NUM_ROWS; r++) { // Read all rows
-      bool currentKeyState = (digitalRead(rowPins[r]) == HIGH);
+    for (int r = 0; r < NUM_ROWS; r++) {
+      bool isPhysicallyPressed = (digitalRead(rowPins[r]) == HIGH);
+      SwitchID_t currentSwitchEnum = physicalKeyToSwitchID[r][c];
       
-      if (currentKeyState && !lastKeyState[r][c]) { // Key newly pressed
-        Serial.print("Key Pressed: ROW "); Serial.print(r + 1);
-        Serial.print(", COL "); Serial.print(c + 1);
-        
-        currentPlayingFrequency = keyToNoteFrequency[r][c];
-        if (currentPlayingFrequency > 0.0f) {
-            Serial.print(", Freq: "); Serial.println(currentPlayingFrequency);
-            activeKeyRow = r;
-            activeKeyCol = c;
-            phase = 0.0; // Reset phase for new note
-        } else {
-            Serial.println(" -> No note mapped or error.");
-        }
-      } else if (!currentKeyState && lastKeyState[r][c]) { // Key newly released
-        if (r == activeKeyRow && c == activeKeyCol) { // If the active key was released
-          Serial.print("Active Key Released: ROW "); Serial.print(r + 1);
-          Serial.print(", COL "); Serial.println(c + 1);
-          currentPlayingFrequency = 0.0f; // Stop sound
-          activeKeyRow = -1;
-          activeKeyCol = -1;
+      if (currentSwitchEnum != SW_INVALID) {
+        int switchIntValue = static_cast<int>(currentSwitchEnum);
+        bool previousState = currentSwitchIsPressed[switchIntValue];
+
+        if (isPhysicallyPressed && !previousState) { // Newly pressed
+          currentSwitchIsPressed[switchIntValue] = true;
+          keyStateChangedThisScan = true;
+          Serial.print("SW"); Serial.print(switchIntValue); Serial.print(" pressed");
+          Note_t assignedNoteEnum = switchNoteAssignment[switchIntValue];
+          if (assignedNoteEnum != NOTE_NONE) {
+            Serial.print(" (Note: "); Serial.print(noteEnumToStringMap[assignedNoteEnum]);
+            Serial.print(", Freq: "); Serial.print(noteEnumToFrequencyMap[assignedNoteEnum], 2); Serial.println(" Hz)");
+          } else {
+            Serial.println(" (Note: N/A, Freq: N/A)");
+          }
+        } else if (!isPhysicallyPressed && previousState) { // Newly released
+          currentSwitchIsPressed[switchIntValue] = false;
+          keyStateChangedThisScan = true;
+          // Optional: Print release event
+          Serial.print("SW"); Serial.print(switchIntValue); Serial.println(" released");
         }
       }
-      lastKeyState[r][c] = currentKeyState;
     }
-    digitalWrite(colPins[c], LOW); // Set column back to LOW
+    digitalWrite(colPins[c], LOW); 
+  }
+
+  // --- Determine Highest Note to Play ---
+  if (keyStateChangedThisScan) { // Only update frequency if a key was pressed or released
+    float highestFrequencyPressed = 0.0f;
+    Note_t noteForHighestFreq = NOTE_NONE;
+
+    for (int i = 1; i <= NUM_TOTAL_SWITCHES; i++) {
+      if (currentSwitchIsPressed[i]) {
+        Note_t note = switchNoteAssignment[i];
+        if (note != NOTE_NONE) {
+          float freq = noteEnumToFrequencyMap[note];
+          if (freq > highestFrequencyPressed) {
+            highestFrequencyPressed = freq;
+            noteForHighestFreq = note;
+          }
+        }
+      }
+    }
+
+    if (currentPlayingFrequency != highestFrequencyPressed) {
+      phase = 0.0; // Reset phase if the playing note changes
+      currentPlayingFrequency = highestFrequencyPressed;
+      if (currentPlayingFrequency > 0.0f) {
+         Serial.print("Now Playing: "); Serial.print(noteEnumToStringMap[noteForHighestFreq]);
+         Serial.print(" ("); Serial.print(currentPlayingFrequency, 2); Serial.println(" Hz)");
+      } else {
+         Serial.println("Silence");
+      }
+    }
   }
 
   // --- Audio Generation & Output ---
-  int16_t max_amplitude_val; // Renamed to avoid conflict with a potential global
-  float phase_increment_val; // Renamed
+  int16_t max_amplitude_val; 
+  float phase_increment_val; 
 
   if (currentPlayingFrequency > 0.0f) {
     max_amplitude_val = (int16_t)(32767.0f * VOLUME_PERCENTAGE);
@@ -288,12 +354,17 @@ void loop() {
           phase -= TWO_PI;
         }
     } else {
-        phase = 0.0f; 
+        phase = 0.0f; // Ensure phase is reset if silent, though already handled above
     }
   }
 
   size_t bytes_written = 0;
-  i2s_write(I2S_NUM_0, i2s_buffer, sizeof(i2s_buffer), &bytes_written, portMAX_DELAY);
-
-  delay(5); // Reduced delay for better responsiveness, adjust if needed
+  esp_err_t result = i2s_write(I2S_NUM_0, i2s_buffer, sizeof(i2s_buffer), &bytes_written, portMAX_DELAY);
+  if (result != ESP_OK) {
+    Serial.print("I2S Write Error: "); Serial.println(esp_err_to_name(result));
+  }
+  // No delay(10) here, as i2s_write with portMAX_DELAY will block.
+  // The keyboard scan itself and processing provides some delay.
+  // If responsiveness is an issue or CPU usage is too high, a small delay can be added.
+  // For example, vTaskDelay(pdMS_TO_TICKS(1)); if using FreeRTOS tasks, or a small delay()
 }
