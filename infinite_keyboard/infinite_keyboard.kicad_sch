@@ -3104,295 +3104,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Switch:SW_Push_Dual"
-			(pin_names
-				(offset 1.016)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "SW"
-				(at 0 7.62 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "SW_Push_Dual"
-				(at 0 -6.35 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 7.62 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "~"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Push button switch, generic, symbol, four pins"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "switch normally-open pushbutton push-button"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "SW_Push_Dual_0_1"
-				(circle
-					(center -2.032 2.54)
-					(radius 0.508)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center -2.032 -2.54)
-					(radius 0.508)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 3.81) (xy 0 5.588)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 3.048) (xy 0 3.556)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 2.032) (xy 0 2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 1.016) (xy 0 1.524)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 0.508) (xy 0 0)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 -0.508) (xy 0 -1.016)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 2.032 2.54)
-					(radius 0.508)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 2.032 -2.54)
-					(radius 0.508)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.54 3.81) (xy -2.54 3.81)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.54 -1.27) (xy -2.54 -1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(pin passive line
-					(at -5.08 2.54 0)
-					(length 2.54)
-					(name "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -5.08 -2.54 0)
-					(length 2.54)
-					(name "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 5.08 2.54 180)
-					(length 2.54)
-					(name "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 5.08 -2.54 180)
-					(length 2.54)
-					(name "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(symbol "SW_Push_Dual_1_1"
-				(rectangle
-					(start -3.175 5.715)
-					(end 3.175 -4.445)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "TPA6130A2RTJR:TPA6130A2RTJR"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -3877,6 +3588,194 @@
 						)
 					)
 					(number "11"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "TS04-66-75-BK-160-SMT:TS04-66-75-BK-160-SMT"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "IC"
+				(at 26.67 7.62 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+				)
+			)
+			(property "Value" "TS04-66-75-BK-160-SMT"
+				(at 26.67 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+				)
+			)
+			(property "Footprint" "TS046675BK160SMT"
+				(at 26.67 -94.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "https://www.sameskydevices.com/product/resource/ts04.pdf"
+				(at 26.67 -194.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Description" "6 x 6 mm, 7.5 mm Actuator Height, 160 gf, Black, Surface Mount, SPST, Tactile Switch"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Height" "7.8"
+				(at 26.67 -394.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Mouser Part Number" "179-TS046675BK160SMT"
+				(at 26.67 -494.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/CUI-Devices/TS04-66-75-BK-160-SMT?qs=A6eO%252BMLsxmR5CIauYOve0Q%3D%3D"
+				(at 26.67 -594.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Manufacturer_Name" "Same Sky"
+				(at 26.67 -694.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Manufacturer_Part_Number" "TS04-66-75-BK-160-SMT"
+				(at 26.67 -794.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(symbol "TS04-66-75-BK-160-SMT_1_1"
+				(rectangle
+					(start 5.08 2.54)
+					(end 25.4 -5.08)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(pin passive line
+					(at 0 0 0)
+					(length 5.08)
+					(name "NO_1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -2.54 0)
+					(length 5.08)
+					(name "COM_1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 30.48 0 180)
+					(length 5.08)
+					(name "NO_2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 30.48 -2.54 180)
+					(length 5.08)
+					(name "COM_2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -4804,6 +4703,12 @@
 		(uuid "185d4ca0-16d9-4ceb-b809-467858796f42")
 	)
 	(junction
+		(at 636.27 323.85)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "1a08dee7-b409-477e-a917-a419ac31fa1f")
+	)
+	(junction
 		(at 407.67 264.16)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4906,6 +4811,12 @@
 		(uuid "558e610f-ba19-4e19-876a-063fa51210fb")
 	)
 	(junction
+		(at 598.17 344.17)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "566299f1-059c-48b0-b26f-f1f52c06d7e3")
+	)
+	(junction
 		(at 433.07 299.72)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4952,6 +4863,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "7067773b-fcf8-4fd4-a892-bdeb40622b13")
+	)
+	(junction
+		(at 628.65 346.71)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "70d858df-1fc9-4a52-ba7a-7af6b57da8fb")
 	)
 	(junction
 		(at 633.73 341.63)
@@ -5006,6 +4923,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "a48954f6-7a4b-48df-97e2-c17e0bc599ac")
+	)
+	(junction
+		(at 697.23 373.38)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "a89ab3d6-9286-496f-82d0-90bbf1f55126")
 	)
 	(junction
 		(at 407.67 325.12)
@@ -5074,6 +4997,12 @@
 		(uuid "c6463064-f8ee-4739-af26-0ed545603223")
 	)
 	(junction
+		(at 538.48 378.46)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "c8ee5e45-5e02-43ef-a225-5178efd250d8")
+	)
+	(junction
 		(at 636.27 341.63)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -5090,6 +5019,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "d151ecc5-be85-4ac5-8340-f519086a1cff")
+	)
+	(junction
+		(at 605.79 321.31)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d299b6c3-a448-4ad0-bb16-efae054c1f52")
 	)
 	(junction
 		(at 544.83 383.54)
@@ -5120,6 +5055,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "dbe7af2a-12e7-4001-aeeb-3c9c4a9bdf2a")
+	)
+	(junction
+		(at 666.75 375.92)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "dd7818ac-16f2-4ae5-84d8-1ef68cb06879")
 	)
 	(junction
 		(at 742.95 431.8)
@@ -5373,6 +5314,16 @@
 	)
 	(wire
 		(pts
+			(xy 628.65 359.41) (xy 631.19 359.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1229eccc-3198-44b1-95bd-c3da1825cfe1")
+	)
+	(wire
+		(pts
 			(xy 487.68 392.43) (xy 574.04 392.43)
 		)
 		(stroke
@@ -5423,6 +5374,16 @@
 	)
 	(wire
 		(pts
+			(xy 628.65 344.17) (xy 628.65 346.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "15ec74d8-6843-48d1-ac1d-b889a26b4319")
+	)
+	(wire
+		(pts
 			(xy 407.67 304.8) (xy 407.67 325.12)
 		)
 		(stroke
@@ -5450,6 +5411,16 @@
 			(type default)
 		)
 		(uuid "16a9bb25-f273-4ec1-b426-7f4dabfd4f6a")
+	)
+	(wire
+		(pts
+			(xy 598.17 344.17) (xy 598.17 346.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "16c2845a-da8c-431c-a65a-14a18e7017ac")
 	)
 	(wire
 		(pts
@@ -6003,16 +5974,6 @@
 	)
 	(wire
 		(pts
-			(xy 629.92 359.41) (xy 631.19 359.41)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4823326f-bc43-4013-a828-761e180de4a3")
-	)
-	(wire
-		(pts
 			(xy 433.07 320.04) (xy 453.39 320.04)
 		)
 		(stroke
@@ -6343,6 +6304,16 @@
 	)
 	(wire
 		(pts
+			(xy 636.27 323.85) (xy 633.73 323.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "60f29f3f-447c-4b37-8da5-146cf99024c7")
+	)
+	(wire
+		(pts
 			(xy 405.13 379.73) (xy 433.07 379.73)
 		)
 		(stroke
@@ -6400,6 +6371,16 @@
 			(type default)
 		)
 		(uuid "6a8cdccb-4537-42c4-a726-a12b50cd75f9")
+	)
+	(wire
+		(pts
+			(xy 636.27 321.31) (xy 636.27 323.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6bde644a-dea1-4c3f-86c5-a7e0a81ed016")
 	)
 	(wire
 		(pts
@@ -6863,6 +6844,16 @@
 	)
 	(wire
 		(pts
+			(xy 697.23 373.38) (xy 697.23 375.92)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "94b3af17-b840-47ee-a5aa-0a5afd576293")
+	)
+	(wire
+		(pts
 			(xy 397.51 284.48) (xy 407.67 284.48)
 		)
 		(stroke
@@ -7073,16 +7064,6 @@
 	)
 	(wire
 		(pts
-			(xy 629.92 336.55) (xy 633.73 336.55)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a7dacc4b-e7ca-48f8-aaa8-d77c2f86fd11")
-	)
-	(wire
-		(pts
 			(xy 511.81 425.45) (xy 511.81 421.64)
 		)
 		(stroke
@@ -7143,7 +7124,7 @@
 	)
 	(wire
 		(pts
-			(xy 633.73 336.55) (xy 633.73 341.63)
+			(xy 633.73 323.85) (xy 633.73 341.63)
 		)
 		(stroke
 			(width 0)
@@ -7390,6 +7371,16 @@
 			(type default)
 		)
 		(uuid "c98eee36-eaed-46d5-bfd2-330ee62c8e10")
+	)
+	(wire
+		(pts
+			(xy 505.46 378.46) (xy 508 378.46)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ca09b4c3-fe7c-4078-951e-6edc604b6e8c")
 	)
 	(wire
 		(pts
@@ -7783,6 +7774,16 @@
 	)
 	(wire
 		(pts
+			(xy 628.65 346.71) (xy 628.65 359.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e568f4df-1179-4443-a053-728d61533082")
+	)
+	(wire
+		(pts
 			(xy 350.52 264.16) (xy 350.52 284.48)
 		)
 		(stroke
@@ -7893,6 +7894,16 @@
 	)
 	(wire
 		(pts
+			(xy 666.75 373.38) (xy 666.75 375.92)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f24aa7d5-6c7d-4b0e-917f-11046817bdda")
+	)
+	(wire
+		(pts
 			(xy 350.52 252.73) (xy 350.52 264.16)
 		)
 		(stroke
@@ -7993,6 +8004,16 @@
 	)
 	(wire
 		(pts
+			(xy 538.48 378.46) (xy 538.48 381)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fa651624-574e-4de8-9cdb-fcfdeb473f23")
+	)
+	(wire
+		(pts
 			(xy 742.95 422.91) (xy 742.95 424.18)
 		)
 		(stroke
@@ -8030,6 +8051,16 @@
 			(type default)
 		)
 		(uuid "fd9ba825-7d20-47f0-b5c1-38438155e72d")
+	)
+	(wire
+		(pts
+			(xy 605.79 321.31) (xy 605.79 323.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fda06044-d9e6-47bc-8ab3-e0c9642d1051")
 	)
 	(wire
 		(pts
@@ -8195,7 +8226,7 @@
 	)
 	(global_label "DIN"
 		(shape input)
-		(at 586.74 403.86 180)
+		(at 586.74 401.32 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -8205,7 +8236,7 @@
 		)
 		(uuid "3617eff0-ae0c-4e15-93d3-fe2fa3d6247d")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 580.5495 403.86 0)
+			(at 580.5495 401.32 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8239,7 +8270,7 @@
 	)
 	(global_label "LRCK"
 		(shape input)
-		(at 586.74 401.32 180)
+		(at 586.74 403.86 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -8249,7 +8280,7 @@
 		)
 		(uuid "6b16b062-2ea9-45be-ba2a-037d1b7fe199")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 578.9167 401.32 0)
+			(at 578.9167 403.86 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8305,7 +8336,7 @@
 	)
 	(global_label "XSMT"
 		(shape input)
-		(at 586.74 398.78 180)
+		(at 586.74 406.4 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -8315,7 +8346,7 @@
 		)
 		(uuid "75da1938-32ff-487a-b8ac-fd1896534d2b")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 578.9168 398.78 0)
+			(at 578.9168 406.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8525,7 +8556,7 @@
 	)
 	(global_label "BCK"
 		(shape input)
-		(at 586.74 406.4 180)
+		(at 586.74 398.78 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -8535,7 +8566,7 @@
 		)
 		(uuid "ae4d10d0-5987-4fe6-924a-af5a70125ccb")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 579.9448 406.4 0)
+			(at 579.9448 398.78 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9394,6 +9425,132 @@
 		)
 	)
 	(symbol
+		(lib_id "TS04-66-75-BK-160-SMT:TS04-66-75-BK-160-SMT")
+		(at 605.79 321.31 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "0d74c350-163d-491f-96eb-d7f9ce7bf099")
+		(property "Reference" "MODE_A2"
+			(at 621.03 313.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "TS04-66-75-BK-160-SMT"
+			(at 621.03 316.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "libraries:TS046675BK160SMT"
+			(at 632.46 416.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.sameskydevices.com/product/resource/ts04.pdf"
+			(at 632.46 516.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "6 x 6 mm, 7.5 mm Actuator Height, 160 gf, Black, Surface Mount, SPST, Tactile Switch"
+			(at 605.79 321.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Height" "7.8"
+			(at 632.46 716.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "179-TS046675BK160SMT"
+			(at 632.46 816.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/CUI-Devices/TS04-66-75-BK-160-SMT?qs=A6eO%252BMLsxmR5CIauYOve0Q%3D%3D"
+			(at 632.46 916.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "Same Sky"
+			(at 632.46 1016.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "TS04-66-75-BK-160-SMT"
+			(at 632.46 1116.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "8816f2d6-ab5e-4abc-8d2b-52755287144a")
+		)
+		(pin "4"
+			(uuid "c5524e41-cde9-4b05-bf70-9699b534c1b5")
+		)
+		(pin "3"
+			(uuid "3b45927d-1cb2-4c51-83a6-e1dea5622ae3")
+		)
+		(pin "1"
+			(uuid "83fe9a1a-0f69-4b6d-91c2-fe0fd6d39e94")
+		)
+		(instances
+			(project ""
+				(path "/9b80a0a3-d99f-4180-8cd6-4080a0b2c0cd"
+					(reference "MODE_A2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C_Polarized_US")
 		(at 822.96 355.6 90)
 		(unit 1)
@@ -9670,7 +9827,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 619.76 336.55 270)
+		(at 605.79 321.31 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -9679,7 +9836,7 @@
 		(fields_autoplaced yes)
 		(uuid "11f3f8dc-03bf-46dd-8b3f-406c5cdb0b4a")
 		(property "Reference" "#PWR068"
-			(at 613.41 336.55 0)
+			(at 599.44 321.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9688,7 +9845,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 615.95 336.5499 90)
+			(at 601.98 321.3099 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9697,7 +9854,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 619.76 336.55 0)
+			(at 605.79 321.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9706,7 +9863,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 619.76 336.55 0)
+			(at 605.79 321.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9715,7 +9872,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 619.76 336.55 0)
+			(at 605.79 321.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11348,6 +11505,132 @@
 		)
 	)
 	(symbol
+		(lib_id "TS04-66-75-BK-160-SMT:TS04-66-75-BK-160-SMT")
+		(at 598.17 344.17 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "293f6fdb-fab3-4e72-93e9-da5353f131a4")
+		(property "Reference" "MODE_B2"
+			(at 613.41 336.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "TS04-66-75-BK-160-SMT"
+			(at 613.41 339.09 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "libraries:TS046675BK160SMT"
+			(at 624.84 439.09 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.sameskydevices.com/product/resource/ts04.pdf"
+			(at 624.84 539.09 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "6 x 6 mm, 7.5 mm Actuator Height, 160 gf, Black, Surface Mount, SPST, Tactile Switch"
+			(at 598.17 344.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Height" "7.8"
+			(at 624.84 739.09 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "179-TS046675BK160SMT"
+			(at 624.84 839.09 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/CUI-Devices/TS04-66-75-BK-160-SMT?qs=A6eO%252BMLsxmR5CIauYOve0Q%3D%3D"
+			(at 624.84 939.09 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "Same Sky"
+			(at 624.84 1039.09 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "TS04-66-75-BK-160-SMT"
+			(at 624.84 1139.09 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "b6e20561-a701-4ea0-9cef-964c02ba2d25")
+		)
+		(pin "1"
+			(uuid "010c850e-2f6a-42ef-942c-8d725f9c6e61")
+		)
+		(pin "4"
+			(uuid "60d65daf-d2e6-43fe-9574-ef1c65d3630b")
+		)
+		(pin "3"
+			(uuid "d5e3c66c-9085-4b00-b064-52a5cedf8dae")
+		)
+		(instances
+			(project ""
+				(path "/9b80a0a3-d99f-4180-8cd6-4080a0b2c0cd"
+					(reference "MODE_B2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+3.3V")
 		(at 588.01 464.82 180)
 		(unit 1)
@@ -12240,7 +12523,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 619.76 359.41 270)
+		(at 598.17 344.17 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -12249,7 +12532,7 @@
 		(fields_autoplaced yes)
 		(uuid "4000b87c-d13a-4fab-b3cf-37f58bf68678")
 		(property "Reference" "#PWR069"
-			(at 613.41 359.41 0)
+			(at 591.82 344.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12258,7 +12541,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 615.95 359.4099 90)
+			(at 594.36 344.1699 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12267,7 +12550,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 619.76 359.41 0)
+			(at 598.17 344.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12276,7 +12559,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 619.76 359.41 0)
+			(at 598.17 344.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12285,7 +12568,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 619.76 359.41 0)
+			(at 598.17 344.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13065,7 +13348,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 528.32 378.46 270)
+		(at 505.46 378.46 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -13074,7 +13357,7 @@
 		(fields_autoplaced yes)
 		(uuid "4f6c816d-9f43-4444-84d7-f740a185c1bd")
 		(property "Reference" "#PWR013"
-			(at 521.97 378.46 0)
+			(at 499.11 378.46 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13083,7 +13366,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 524.51 378.4599 90)
+			(at 501.65 378.4599 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13092,7 +13375,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 528.32 378.46 0)
+			(at 505.46 378.46 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13101,7 +13384,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 528.32 378.46 0)
+			(at 505.46 378.46 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13110,7 +13393,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 528.32 378.46 0)
+			(at 505.46 378.46 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13532,80 +13815,6 @@
 			(project ""
 				(path "/9b80a0a3-d99f-4180-8cd6-4080a0b2c0cd"
 					(reference "R9")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Switch:SW_Push_Dual")
-		(at 624.84 339.09 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "5d7f54c3-0d23-4cd8-b882-895d5bb9931c")
-		(property "Reference" "MODE_A2"
-			(at 624.84 328.93 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SW_Push_Dual"
-			(at 624.84 331.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Button_Switch_THT:SW_PUSH_6mm_H4.3mm"
-			(at 624.84 331.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 624.84 339.09 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Push button switch, generic, symbol, four pins"
-			(at 624.84 339.09 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "4"
-			(uuid "c2302e18-32ea-4ee5-b34f-28f00ed52140")
-		)
-		(pin "2"
-			(uuid "d6b5376d-28b1-473c-a719-542624f67ea1")
-		)
-		(pin "3"
-			(uuid "e10f6ac0-3cd6-4615-99d5-89f70f747b59")
-		)
-		(pin "1"
-			(uuid "b6736969-6666-47c9-9a41-cc074c5d88ee")
-		)
-		(instances
-			(project ""
-				(path "/9b80a0a3-d99f-4180-8cd6-4080a0b2c0cd"
-					(reference "MODE_A2")
 					(unit 1)
 				)
 			)
@@ -14169,73 +14378,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GND")
-		(at 676.91 375.92 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "649c81d4-6a6e-4081-99c6-6064359eb809")
-		(property "Reference" "#PWR078"
-			(at 683.26 375.92 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 680.72 375.9199 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 676.91 375.92 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 676.91 375.92 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 676.91 375.92 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "1f26882e-7fa8-429d-a2d4-b2f7324db328")
-		)
-		(instances
-			(project ""
-				(path "/9b80a0a3-d99f-4180-8cd6-4080a0b2c0cd"
-					(reference "#PWR078")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:D")
 		(at 345.44 370.84 180)
 		(unit 1)
@@ -14316,6 +14458,72 @@
 			(project ""
 				(path "/9b80a0a3-d99f-4180-8cd6-4080a0b2c0cd"
 					(reference "D6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 650.24 334.01 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "6b313ed1-5498-4579-b1f8-90e0d01b1fea")
+		(property "Reference" "#PWR070"
+			(at 650.24 327.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 650.24 328.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 650.24 334.01 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 650.24 334.01 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 650.24 334.01 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "db23b971-ebf2-497e-b417-ca59c1d3b340")
+		)
+		(instances
+			(project ""
+				(path "/9b80a0a3-d99f-4180-8cd6-4080a0b2c0cd"
+					(reference "#PWR070")
 					(unit 1)
 				)
 			)
@@ -15402,72 +15610,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+3.3V")
-		(at 556.26 375.92 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "832c0b73-cd26-4e74-b2ce-2cd9f6c6f6db")
-		(property "Reference" "#PWR015"
-			(at 556.26 379.73 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+3.3V"
-			(at 556.26 370.84 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 556.26 375.92 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 556.26 375.92 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 556.26 375.92 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "18728da7-08fb-46c6-83ba-afabd6f5ad5f")
-		)
-		(instances
-			(project ""
-				(path "/9b80a0a3-d99f-4180-8cd6-4080a0b2c0cd"
-					(reference "#PWR015")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 830.58 426.72 0)
 		(unit 1)
@@ -15819,6 +15961,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 556.26 375.92 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "8751d3c6-1c91-4979-9ce5-39606389e1e7")
+		(property "Reference" "#PWR015"
+			(at 556.26 369.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 556.26 370.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 556.26 375.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 556.26 375.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 556.26 375.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "58c9abcd-77dc-4f49-a766-e5d00df9d230")
+		)
+		(instances
+			(project ""
+				(path "/9b80a0a3-d99f-4180-8cd6-4080a0b2c0cd"
+					(reference "#PWR015")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "cherry_mx_key:MX1A-G1NW")
 		(at 363.22 347.98 0)
 		(unit 1)
@@ -16014,80 +16222,6 @@
 			(project ""
 				(path "/9b80a0a3-d99f-4180-8cd6-4080a0b2c0cd"
 					(reference "#PWR010")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Switch:SW_Push_Dual")
-		(at 624.84 361.95 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "8daae28a-73eb-40a9-a0ad-181c6d79a47f")
-		(property "Reference" "MODE_B2"
-			(at 624.84 351.79 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SW_Push_Dual"
-			(at 624.84 354.33 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Button_Switch_THT:SW_PUSH_6mm_H4.3mm"
-			(at 624.84 354.33 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 624.84 361.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Push button switch, generic, symbol, four pins"
-			(at 624.84 361.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "4"
-			(uuid "c2302e18-32ea-4ee5-b34f-28f00ed52141")
-		)
-		(pin "2"
-			(uuid "d6b5376d-28b1-473c-a719-542624f67ea2")
-		)
-		(pin "3"
-			(uuid "e10f6ac0-3cd6-4615-99d5-89f70f747b5a")
-		)
-		(pin "1"
-			(uuid "b6736969-6666-47c9-9a41-cc074c5d88ef")
-		)
-		(instances
-			(project ""
-				(path "/9b80a0a3-d99f-4180-8cd6-4080a0b2c0cd"
-					(reference "MODE_B2")
 					(unit 1)
 				)
 			)
@@ -16783,79 +16917,6 @@
 			(project ""
 				(path "/9b80a0a3-d99f-4180-8cd6-4080a0b2c0cd"
 					(reference "#PWR071")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Switch:SW_Push_Dual")
-		(at 671.83 378.46 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "9f1d4ff9-47c9-413e-9318-628517706352")
-		(property "Reference" "BOOT1"
-			(at 671.83 368.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SW_Push_Dual"
-			(at 671.83 370.84 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Button_Switch_THT:SW_PUSH_6mm_H4.3mm"
-			(at 671.83 370.84 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 671.83 378.46 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Push button switch, generic, symbol, four pins"
-			(at 671.83 378.46 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "4"
-			(uuid "c2302e18-32ea-4ee5-b34f-28f00ed52142")
-		)
-		(pin "2"
-			(uuid "d6b5376d-28b1-473c-a719-542624f67ea3")
-		)
-		(pin "3"
-			(uuid "e10f6ac0-3cd6-4615-99d5-89f70f747b5b")
-		)
-		(pin "1"
-			(uuid "b6736969-6666-47c9-9a41-cc074c5d88f0")
-		)
-		(instances
-			(project ""
-				(path "/9b80a0a3-d99f-4180-8cd6-4080a0b2c0cd"
-					(reference "BOOT1")
 					(unit 1)
 				)
 			)
@@ -17677,6 +17738,132 @@
 		)
 	)
 	(symbol
+		(lib_id "TS04-66-75-BK-160-SMT:TS04-66-75-BK-160-SMT")
+		(at 666.75 373.38 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "aa892614-c850-4031-891b-f79000168bf7")
+		(property "Reference" "BOOT1"
+			(at 681.99 365.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "TS04-66-75-BK-160-SMT"
+			(at 681.99 368.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "libraries:TS046675BK160SMT"
+			(at 693.42 468.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.sameskydevices.com/product/resource/ts04.pdf"
+			(at 693.42 568.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "6 x 6 mm, 7.5 mm Actuator Height, 160 gf, Black, Surface Mount, SPST, Tactile Switch"
+			(at 666.75 373.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Height" "7.8"
+			(at 693.42 768.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "179-TS046675BK160SMT"
+			(at 693.42 868.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/CUI-Devices/TS04-66-75-BK-160-SMT?qs=A6eO%252BMLsxmR5CIauYOve0Q%3D%3D"
+			(at 693.42 968.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "Same Sky"
+			(at 693.42 1068.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "TS04-66-75-BK-160-SMT"
+			(at 693.42 1168.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "b3231ea9-3c92-4b2b-a127-f19e30091659")
+		)
+		(pin "3"
+			(uuid "928140e1-2178-4660-8b67-d20b4e9a454e")
+		)
+		(pin "2"
+			(uuid "600ba6c5-abc2-4c41-881f-b98010936616")
+		)
+		(pin "4"
+			(uuid "bead8332-1f4c-46ec-95cf-49869b9613d8")
+		)
+		(instances
+			(project ""
+				(path "/9b80a0a3-d99f-4180-8cd6-4080a0b2c0cd"
+					(reference "BOOT1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C_Polarized_US")
 		(at 863.6 391.16 270)
 		(unit 1)
@@ -17944,80 +18131,6 @@
 			(project ""
 				(path "/9b80a0a3-d99f-4180-8cd6-4080a0b2c0cd"
 					(reference "SW5")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Switch:SW_Push_Dual")
-		(at 533.4 381 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "ae6a0bfe-1a04-4275-9687-94a6f8fc0d34")
-		(property "Reference" "RESET1"
-			(at 533.4 370.84 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SW_Push_Dual"
-			(at 533.4 373.38 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Button_Switch_THT:SW_PUSH_6mm_H4.3mm"
-			(at 533.4 373.38 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 533.4 381 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Push button switch, generic, symbol, four pins"
-			(at 533.4 381 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "4"
-			(uuid "c2302e18-32ea-4ee5-b34f-28f00ed52143")
-		)
-		(pin "2"
-			(uuid "d6b5376d-28b1-473c-a719-542624f67ea4")
-		)
-		(pin "3"
-			(uuid "e10f6ac0-3cd6-4615-99d5-89f70f747b5c")
-		)
-		(pin "1"
-			(uuid "b6736969-6666-47c9-9a41-cc074c5d88f1")
-		)
-		(instances
-			(project ""
-				(path "/9b80a0a3-d99f-4180-8cd6-4080a0b2c0cd"
-					(reference "RESET1")
 					(unit 1)
 				)
 			)
@@ -21648,6 +21761,132 @@
 		)
 	)
 	(symbol
+		(lib_id "TS04-66-75-BK-160-SMT:TS04-66-75-BK-160-SMT")
+		(at 508 378.46 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e308262e-3152-4744-a50e-935986752fd9")
+		(property "Reference" "RESET1"
+			(at 523.24 370.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "TS04-66-75-BK-160-SMT"
+			(at 523.24 373.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "libraries:TS046675BK160SMT"
+			(at 534.67 473.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.sameskydevices.com/product/resource/ts04.pdf"
+			(at 534.67 573.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "6 x 6 mm, 7.5 mm Actuator Height, 160 gf, Black, Surface Mount, SPST, Tactile Switch"
+			(at 508 378.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Height" "7.8"
+			(at 534.67 773.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "179-TS046675BK160SMT"
+			(at 534.67 873.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/CUI-Devices/TS04-66-75-BK-160-SMT?qs=A6eO%252BMLsxmR5CIauYOve0Q%3D%3D"
+			(at 534.67 973.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "Same Sky"
+			(at 534.67 1073.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "TS04-66-75-BK-160-SMT"
+			(at 534.67 1173.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "3c1712e0-82a4-4538-8de2-bc73d338bb18")
+		)
+		(pin "4"
+			(uuid "f9b09e66-b49f-4ff8-b54c-e4fdca55a110")
+		)
+		(pin "2"
+			(uuid "d620e76c-1d17-43f8-bb45-2f8395057556")
+		)
+		(pin "1"
+			(uuid "4131049b-4396-4e57-917a-8d6316505ae5")
+		)
+		(instances
+			(project ""
+				(path "/9b80a0a3-d99f-4180-8cd6-4080a0b2c0cd"
+					(reference "RESET1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R_US")
 		(at 476.25 408.94 270)
 		(unit 1)
@@ -21784,72 +22023,6 @@
 	)
 	(symbol
 		(lib_id "power:+3.3V")
-		(at 650.24 334.01 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "e5f5f792-f558-4e7d-8dbd-59cfe89c0e63")
-		(property "Reference" "#PWR070"
-			(at 650.24 337.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+3.3V"
-			(at 650.24 328.93 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 650.24 334.01 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 650.24 334.01 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 650.24 334.01 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "0e4a7766-81ac-4266-81dd-1caedecd8a93")
-		)
-		(instances
-			(project ""
-				(path "/9b80a0a3-d99f-4180-8cd6-4080a0b2c0cd"
-					(reference "#PWR070")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+3.3V")
 		(at 647.7 373.38 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -21969,7 +22142,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "23fe4a8d-1f94-4524-bba6-6854e38d6393")
+			(uuid "23fe4a8d-1f94-4524-bba6-6854e38d6394")
 		)
 		(instances
 			(project ""
@@ -22245,6 +22418,73 @@
 			(project ""
 				(path "/9b80a0a3-d99f-4180-8cd6-4080a0b2c0cd"
 					(reference "#PWR011")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 697.23 373.38 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f3409ea9-3f1f-4f02-b8b5-6c46f02b1b19")
+		(property "Reference" "#PWR078"
+			(at 703.58 373.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 701.04 373.3799 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 697.23 373.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 697.23 373.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 697.23 373.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "5ef4a496-fb8b-46bf-9673-bcce92756efe")
+		)
+		(instances
+			(project ""
+				(path "/9b80a0a3-d99f-4180-8cd6-4080a0b2c0cd"
+					(reference "#PWR078")
 					(unit 1)
 				)
 			)

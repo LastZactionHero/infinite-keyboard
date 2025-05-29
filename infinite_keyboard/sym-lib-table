@@ -10,4 +10,5 @@
   (lib (name "SJ-43617-SMT-TR")(type "KiCad")(uri "${KIPRJMOD}/libraries/SJ-43617-SMT-TR.kicad_sym")(options "")(descr ""))
   (lib (name "AP2112K-3_3TRG1")(type "KiCad")(uri "${KIPRJMOD}/libraries/AP2112K-3_3TRG1.kicad_sym")(options "")(descr ""))
   (lib (name "AP2112K-3.3TRG1")(type "Legacy")(uri "${KIPRJMOD}/libraries/AP2112K-3.3TRG1.lib")(options "")(descr ""))
+  (lib (name "TS04-66-75-BK-160-SMT")(type "KiCad")(uri "${KIPRJMOD}/libraries/TS04-66-75-BK-160-SMT.kicad_sym")(options "")(descr ""))
 )
