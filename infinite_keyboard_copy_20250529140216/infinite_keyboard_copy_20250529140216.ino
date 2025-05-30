@@ -56,7 +56,9 @@ typedef enum {
 #define SAMPLE_RATE         44100
 #define BITS_PER_SAMPLE     I2S_BITS_PER_SAMPLE_16BIT
 #define NUM_AUDIO_CHANNELS  I2S_CHANNEL_FMT_RIGHT_LEFT // Stereo
-#define VOLUME_PERCENTAGE   0.15f  // Adjust as needed
+#define VOLUME_PERCENTAGE   0.05f  // Adjust as needed
+#define MAX_POLYPHONY       5      // Maximum number of simultaneous notes
+#define MAX_AMPLITUDE       32767.0f  // Maximum 16-bit amplitude
 
 #define I2S_BUFFER_SIZE 256 
 int16_t i2s_buffer[I2S_BUFFER_SIZE * 2]; 
@@ -72,6 +74,17 @@ Note_t switchNoteAssignment[NUM_TOTAL_SWITCHES + 1];
 const char* noteEnumToStringMap[NOTE_COUNT];
 float noteEnumToFrequencyMap[NOTE_COUNT];
 
+// Structure to hold active note information
+struct ActiveNote {
+  float frequency;
+  Note_t note;
+  bool isActive;
+  float phase;
+  float modulatorPhase;  // For FM synthesis
+};
+
+ActiveNote activeNotes[MAX_POLYPHONY];
+int numActiveNotes = 0;
 
 // --- TPA6130A2 Amplifier Control ---
 void set_tpa6130a2_register(uint8_t reg, uint8_t value) {
@@ -218,6 +231,114 @@ void initializeNoteFrequencies() {
   }
 }
 
+// --- Synth Type Definitions ---
+typedef enum {
+  SYNTH_SINE,
+  SYNTH_SAW,
+  SYNTH_SQUARE,
+  SYNTH_FM,
+  // Future synth types will be added here
+} SynthType_t;
+
+// Set default synth type at compile time
+#define DEFAULT_SYNTH_TYPE SYNTH_FM
+
+// Base class for all synth types
+class Synth {
+protected:
+  float frequency;
+  float phase;
+  float volume;
+
+public:
+  Synth() : frequency(0.0f), phase(0.0f), volume(0.15f) {}
+  virtual ~Synth() {}
+  
+  virtual void setFrequency(float freq) {
+    frequency = freq;
+    if (freq == 0.0f) {
+      phase = 0.0f;
+    }
+  }
+  
+  void setVolume(float vol) {
+    volume = vol;
+  }
+  
+  virtual float generateSample(float notePhase, float& modPhase) {
+    return generateSample(notePhase); // Default implementation for non-FM synths
+  }
+  
+  virtual float generateSample(float notePhase) {
+    if (frequency <= 0.0f) return 0.0f;
+    return sin(notePhase) * volume;
+  }
+};
+
+// Sine wave implementation
+class SineSynth : public Synth {
+public:
+  float generateSample(float notePhase) override {
+    if (frequency <= 0.0f) return 0.0f;
+    return sin(notePhase) * volume;
+  }
+};
+
+// Sawtooth wave implementation
+class SawSynth : public Synth {
+public:
+  float generateSample(float notePhase) override {
+    if (frequency <= 0.0f) return 0.0f;
+    return ((notePhase / TWO_PI) * 2.0f - 1.0f) * volume;
+  }
+};
+
+// Square wave implementation
+class SquareSynth : public Synth {
+public:
+  float generateSample(float notePhase) override {
+    if (frequency <= 0.0f) return 0.0f;
+    return (notePhase < PI ? 1.0f : -1.0f) * volume;
+  }
+};
+
+// FM synthesis implementation
+class FMSynth : public Synth {
+private:
+  float modulationIndex;
+  float modulatorRatio;
+  
+public:
+  FMSynth() : Synth(), modulationIndex(2.0f), modulatorRatio(2.0f) {}
+  
+  float generateSample(float notePhase, float& modPhase) override {
+    if (frequency <= 0.0f) return 0.0f;
+    
+    // Calculate modulator frequency based on ratio
+    float modulatorFreq = frequency * modulatorRatio;
+    
+    // Generate modulator signal
+    float modulatorSignal = sin(modPhase);
+    
+    // Apply modulation to carrier phase
+    float modulatedPhase = notePhase + (modulatorSignal * modulationIndex);
+    
+    // Generate carrier signal with modulated phase
+    float sample = sin(modulatedPhase) * volume;
+    
+    // Update modulator phase
+    modPhase += (TWO_PI * modulatorFreq) / SAMPLE_RATE;
+    if (modPhase >= TWO_PI) {
+      modPhase -= TWO_PI;
+    }
+    
+    return sample;
+  }
+};
+
+// Global synth instance
+Synth* currentSynth = nullptr;
+
 // --- Main Setup ---
 void setup() {
   Serial.begin(115200);
@@ -258,6 +379,31 @@ void setup() {
   // Initialize I2S
   setup_i2s();
 
+  // Initialize synth based on default type
+  switch (DEFAULT_SYNTH_TYPE) {
+    case SYNTH_SINE:
+      currentSynth = new SineSynth();
+      Serial.println("Initialized Sine Wave Synth");
+      break;
+    case SYNTH_SAW:
+      currentSynth = new SawSynth();
+      Serial.println("Initialized Sawtooth Wave Synth");
+      break;
+    case SYNTH_SQUARE:
+      currentSynth = new SquareSynth();
+      Serial.println("Initialized Square Wave Synth");
+      break;
+    case SYNTH_FM:
+      currentSynth = new FMSynth();
+      Serial.println("Initialized FM Synth");
+      break;
+    default:
+      currentSynth = new SineSynth(); // Fallback to sine
+      Serial.println("Invalid synth type, defaulting to Sine Wave");
+      break;
+  }
+  currentSynth->setVolume(VOLUME_PERCENTAGE);
+
   Serial.println("Setup complete. Ready to play!");
 }
 
@@ -280,82 +426,83 @@ void loop() {
         if (isPhysicallyPressed && !previousState) { // Newly pressed
           currentSwitchIsPressed[switchIntValue] = true;
           keyStateChangedThisScan = true;
-          Serial.print("SW"); Serial.print(switchIntValue); Serial.print(" pressed");
           Note_t assignedNoteEnum = switchNoteAssignment[switchIntValue];
-          if (assignedNoteEnum != NOTE_NONE) {
-            Serial.print(" (Note: "); Serial.print(noteEnumToStringMap[assignedNoteEnum]);
-            Serial.print(", Freq: "); Serial.print(noteEnumToFrequencyMap[assignedNoteEnum], 2); Serial.println(" Hz)");
-          } else {
-            Serial.println(" (Note: N/A, Freq: N/A)");
+          
+          if (assignedNoteEnum != NOTE_NONE && numActiveNotes < MAX_POLYPHONY) {
+            // Add new note to active notes
+            activeNotes[numActiveNotes].frequency = noteEnumToFrequencyMap[assignedNoteEnum];
+            activeNotes[numActiveNotes].note = assignedNoteEnum;
+            activeNotes[numActiveNotes].isActive = true;
+            activeNotes[numActiveNotes].phase = 0.0f;
+            activeNotes[numActiveNotes].modulatorPhase = 0.0f;
+            numActiveNotes++;
+            
+            Serial.print("Note added: "); Serial.print(noteEnumToStringMap[assignedNoteEnum]);
+            Serial.print(" ("); Serial.print(noteEnumToFrequencyMap[assignedNoteEnum], 2); 
+            Serial.print(" Hz). Active notes: "); Serial.println(numActiveNotes);
           }
         } else if (!isPhysicallyPressed && previousState) { // Newly released
           currentSwitchIsPressed[switchIntValue] = false;
           keyStateChangedThisScan = true;
-          // Optional: Print release event
-          Serial.print("SW"); Serial.print(switchIntValue); Serial.println(" released");
+          Note_t releasedNote = switchNoteAssignment[switchIntValue];
+          
+          // Remove the released note from active notes
+          for (int i = 0; i < numActiveNotes; i++) {
+            if (activeNotes[i].note == releasedNote) {
+              // Move the last active note to this position
+              if (i < numActiveNotes - 1) {
+                activeNotes[i] = activeNotes[numActiveNotes - 1];
+              }
+              numActiveNotes--;
+              Serial.print("Note removed: "); Serial.print(noteEnumToStringMap[releasedNote]);
+              Serial.print(". Active notes: "); Serial.println(numActiveNotes);
+              break;
+            }
+          }
         }
       }
     }
     digitalWrite(colPins[c], LOW); 
   }
 
-  // --- Determine Highest Note to Play ---
-  if (keyStateChangedThisScan) { // Only update frequency if a key was pressed or released
-    float highestFrequencyPressed = 0.0f;
-    Note_t noteForHighestFreq = NOTE_NONE;
-
-    for (int i = 1; i <= NUM_TOTAL_SWITCHES; i++) {
-      if (currentSwitchIsPressed[i]) {
-        Note_t note = switchNoteAssignment[i];
-        if (note != NOTE_NONE) {
-          float freq = noteEnumToFrequencyMap[note];
-          if (freq > highestFrequencyPressed) {
-            highestFrequencyPressed = freq;
-            noteForHighestFreq = note;
-          }
-        }
-      }
-    }
-
-    if (currentPlayingFrequency != highestFrequencyPressed) {
-      phase = 0.0; // Reset phase if the playing note changes
-      currentPlayingFrequency = highestFrequencyPressed;
-      if (currentPlayingFrequency > 0.0f) {
-         Serial.print("Now Playing: "); Serial.print(noteEnumToStringMap[noteForHighestFreq]);
-         Serial.print(" ("); Serial.print(currentPlayingFrequency, 2); Serial.println(" Hz)");
-      } else {
-         Serial.println("Silence");
-      }
-    }
-  }
-
   // --- Audio Generation & Output ---
-  int16_t max_amplitude_val; 
-  float phase_increment_val; 
-
-  if (currentPlayingFrequency > 0.0f) {
-    max_amplitude_val = (int16_t)(32767.0f * VOLUME_PERCENTAGE);
-    phase_increment_val = (TWO_PI * currentPlayingFrequency) / SAMPLE_RATE;
-  } else {
-    max_amplitude_val = 0; // Silence
-    phase_increment_val = 0.0f;
-  }
-
   for (int i = 0; i < I2S_BUFFER_SIZE * 2; i += 2) {
-    float sample_float = sin(phase) * max_amplitude_val;
+    float sample_float = 0.0f;
+    
+    // Generate samples for all active notes and sum them
+    for (int note = 0; note < numActiveNotes; note++) {
+      currentSynth->setFrequency(activeNotes[note].frequency);
+      
+      // Update phase for this note
+      activeNotes[note].phase += (TWO_PI * activeNotes[note].frequency) / SAMPLE_RATE;
+      if (activeNotes[note].phase >= TWO_PI) {
+        activeNotes[note].phase -= TWO_PI;
+      }
+      
+      // Generate sample for this note
+      sample_float += (currentSynth->generateSample(activeNotes[note].phase, activeNotes[note].modulatorPhase)) / float(numActiveNotes);
+    }
+    
+    // // Apply dynamic scaling based on number of active notes
+    // if (numActiveNotes > 0) {
+    //   // Scale factor decreases as more notes are played
+    //   float scaleFactor = 1.0f / sqrtf(numActiveNotes);
+    //   sample_float *= scaleFactor;
+    // }
+    
+    // Apply volume and convert to 16-bit
+    sample_float *= VOLUME_PERCENTAGE * MAX_AMPLITUDE * 0.5f;
+    
+    // Soft clipping to prevent harsh distortion
+    if (sample_float > MAX_AMPLITUDE) {
+      sample_float = MAX_AMPLITUDE - (MAX_AMPLITUDE - sample_float) * 0.1f;
+    } else if (sample_float < -MAX_AMPLITUDE) {
+      sample_float = -MAX_AMPLITUDE + (MAX_AMPLITUDE + sample_float) * 0.1f;
+    }
+    
     int16_t sample_int = (int16_t)sample_float;
-
     i2s_buffer[i] = sample_int;     // Left channel
     i2s_buffer[i + 1] = sample_int; // Right channel (mono sound on stereo)
-
-    if (currentPlayingFrequency > 0.0f) {
-        phase += phase_increment_val;
-        if (phase >= TWO_PI) {
-          phase -= TWO_PI;
-        }
-    } else {
-        phase = 0.0f; // Ensure phase is reset if silent, though already handled above
-    }
   }
 
   size_t bytes_written = 0;
@@ -363,8 +510,4 @@ void loop() {
   if (result != ESP_OK) {
     Serial.print("I2S Write Error: "); Serial.println(esp_err_to_name(result));
   }
-  // No delay(10) here, as i2s_write with portMAX_DELAY will block.
-  // The keyboard scan itself and processing provides some delay.
-  // If responsiveness is an issue or CPU usage is too high, a small delay can be added.
-  // For example, vTaskDelay(pdMS_TO_TICKS(1)); if using FreeRTOS tasks, or a small delay()
 }
