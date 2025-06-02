@@ -7,6 +7,12 @@ const int NUM_ROWS = 6;
 const int NUM_COLS = 4;
 const int NUM_TOTAL_SWITCHES = NUM_ROWS * NUM_COLS; // 24 switches
 
+// LED Pin Definitions
+#define LED_POWER_PIN 11  // Power LED
+#define LED_RUNNING_PIN 10  // Running LED
+#define LED_MODE_A_PIN 9   // Mode A LED
+#define LED_MODE_B_PIN 3   // Mode B LED
+
 // Define the GPIO pins for columns (outputs)
 const int colPins[NUM_COLS] = {
   37, // COL 1: IO37
@@ -60,8 +66,31 @@ typedef enum {
 #define MAX_POLYPHONY       5      // Maximum number of simultaneous notes
 #define MAX_AMPLITUDE       32767.0f  // Maximum 16-bit amplitude
 
-#define I2S_BUFFER_SIZE 256 
+// Sine lookup table for performance optimization
+#define SINE_TABLE_SIZE 1024
+float sineTable[SINE_TABLE_SIZE];
+
+// Fast sine lookup function - optimized version
+inline float fastSin(float phase) {
+  // Normalize phase to [0, TWO_PI) using modulo instead of while loops
+  if (phase < 0) phase += TWO_PI;
+  if (phase >= TWO_PI) phase -= TWO_PI;
+  
+  float index = (phase * SINE_TABLE_SIZE) / TWO_PI;
+  int i = (int)index;
+  return sineTable[i % SINE_TABLE_SIZE]; // Safe modulo for any table size
+}
+
+#define I2S_BUFFER_SIZE 512
 int16_t i2s_buffer[I2S_BUFFER_SIZE * 2]; 
+
+// Add timing and buffer monitoring
+uint32_t last_buffer_check = 0;
+const uint32_t BUFFER_CHECK_INTERVAL = 1000; // Check every 1 second
+uint32_t last_write_time = 0;
+uint32_t max_write_duration = 0;
+uint32_t total_writes = 0;
+uint32_t buffer_underruns = 0;
 
 float currentPlayingFrequency = 0.0f; 
 float phase = 0.0;
@@ -116,8 +145,8 @@ void setup_i2s() {
     .channel_format = NUM_AUDIO_CHANNELS,
     .communication_format = I2S_COMM_FORMAT_STAND_I2S,
     .intr_alloc_flags = ESP_INTR_FLAG_LEVEL1,
-    .dma_buf_count = 8,
-    .dma_buf_len = 64, 
+    .dma_buf_count = 16,
+    .dma_buf_len = 128,
     .use_apll = true,
     .tx_desc_auto_clear = true,
     .fixed_mclk = 0
@@ -309,7 +338,7 @@ private:
   float modulatorRatio;
   
 public:
-  FMSynth() : Synth(), modulationIndex(2.0f), modulatorRatio(2.0f) {}
+  FMSynth() : Synth(), modulationIndex(0.5f), modulatorRatio(2.0f) {}
   
   float generateSample(float notePhase, float& modPhase) override {
     if (frequency <= 0.0f) return 0.0f;
@@ -317,13 +346,13 @@ public:
     // Calculate modulator frequency based on ratio
     float modulatorFreq = frequency * modulatorRatio;
     
-    // Generate modulator signal
+    // Generate modulator signal - use built-in sin()
     float modulatorSignal = sin(modPhase);
     
     // Apply modulation to carrier phase
     float modulatedPhase = notePhase + (modulatorSignal * modulationIndex);
     
-    // Generate carrier signal with modulated phase
+    // Generate carrier signal with modulated phase - use built-in sin()
     float sample = sin(modulatedPhase) * volume;
     
     // Update modulator phase
@@ -344,6 +373,27 @@ void setup() {
   Serial.begin(115200);
   delay(1000); 
   Serial.println("ESP32-S3 Keyboard Synthesizer Initialized");
+
+  // Memory diagnostics
+  Serial.println("=== Memory Information ===");
+  Serial.print("Total heap: "); Serial.println(ESP.getHeapSize());
+  Serial.print("Free heap: "); Serial.println(ESP.getFreeHeap());
+  Serial.print("Total PSRAM: "); Serial.println(ESP.getPsramSize());
+  Serial.print("Free PSRAM: "); Serial.println(ESP.getFreePsram());
+  Serial.print("Flash size: "); Serial.println(ESP.getFlashChipSize());
+  Serial.print("Sketch size: "); Serial.println(ESP.getSketchSize());
+  Serial.print("Free flash: "); Serial.println(ESP.getFreeSketchSpace());
+  Serial.println("===========================");
+
+  // Initialize LEDs (active low)
+  pinMode(LED_POWER_PIN, OUTPUT);
+  pinMode(LED_RUNNING_PIN, OUTPUT);
+  pinMode(LED_MODE_A_PIN, OUTPUT);
+  pinMode(LED_MODE_B_PIN, OUTPUT);
+  digitalWrite(LED_POWER_PIN, LOW);
+  digitalWrite(LED_RUNNING_PIN, LOW);
+  digitalWrite(LED_MODE_A_PIN, LOW);
+  digitalWrite(LED_MODE_B_PIN, LOW);
 
   // Initialize keyboard column pins
   for (int i = 0; i < NUM_COLS; i++) {
@@ -378,6 +428,13 @@ void setup() {
 
   // Initialize I2S
   setup_i2s();
+
+  // Initialize sine lookup table
+  Serial.println("Initializing sine lookup table...");
+  for (int i = 0; i < SINE_TABLE_SIZE; i++) {
+    sineTable[i] = sin((TWO_PI * i) / SINE_TABLE_SIZE);
+  }
+  Serial.println("Sine lookup table initialized.");
 
   // Initialize synth based on default type
   switch (DEFAULT_SYNTH_TYPE) {
@@ -466,39 +523,55 @@ void loop() {
   }
 
   // --- Audio Generation & Output ---
+  uint32_t start_time = micros();
+  
+  // Pre-calculate phase increments and set frequencies for all active notes
+  float phaseIncrements[MAX_POLYPHONY];
+  float modulatorIncrements[MAX_POLYPHONY];
+  for (int note = 0; note < numActiveNotes; note++) {
+    phaseIncrements[note] = (TWO_PI * activeNotes[note].frequency) / SAMPLE_RATE;
+    // Pre-calculate modulator increment for FM synthesis
+    modulatorIncrements[note] = (TWO_PI * activeNotes[note].frequency * 2.0f) / SAMPLE_RATE; // 2.0f is modulatorRatio
+  }
+  
   for (int i = 0; i < I2S_BUFFER_SIZE * 2; i += 2) {
     float sample_float = 0.0f;
     
     // Generate samples for all active notes and sum them
     for (int note = 0; note < numActiveNotes; note++) {
-      currentSynth->setFrequency(activeNotes[note].frequency);
-      
-      // Update phase for this note
-      activeNotes[note].phase += (TWO_PI * activeNotes[note].frequency) / SAMPLE_RATE;
+      // Update phase for this note using pre-calculated increment
+      activeNotes[note].phase += phaseIncrements[note];
       if (activeNotes[note].phase >= TWO_PI) {
         activeNotes[note].phase -= TWO_PI;
       }
       
-      // Generate sample for this note
-      sample_float += (currentSynth->generateSample(activeNotes[note].phase, activeNotes[note].modulatorPhase)) / float(numActiveNotes);
+      // For FM synthesis, manually calculate the sample to avoid setFrequency overhead
+      if (activeNotes[note].frequency > 0.0f) {
+        // Generate modulator signal
+        float modulatorSignal = sin(activeNotes[note].modulatorPhase);
+        
+        // Apply modulation to carrier phase (modulationIndex = 0.5f)
+        float modulatedPhase = activeNotes[note].phase + (modulatorSignal * 0.5f);
+        
+        // Generate carrier signal
+        float sample = sin(modulatedPhase) * 0.15f; // volume = 0.15f
+        
+        // Update modulator phase
+        activeNotes[note].modulatorPhase += modulatorIncrements[note];
+        if (activeNotes[note].modulatorPhase >= TWO_PI) {
+          activeNotes[note].modulatorPhase -= TWO_PI;
+        }
+        
+        sample_float += sample * 0.25f;
+      }
     }
     
-    // // Apply dynamic scaling based on number of active notes
-    // if (numActiveNotes > 0) {
-    //   // Scale factor decreases as more notes are played
-    //   float scaleFactor = 1.0f / sqrtf(numActiveNotes);
-    //   sample_float *= scaleFactor;
-    // }
+    // Simplified volume application
+    sample_float *= VOLUME_PERCENTAGE * MAX_AMPLITUDE;
     
-    // Apply volume and convert to 16-bit
-    sample_float *= VOLUME_PERCENTAGE * MAX_AMPLITUDE * 0.5f;
-    
-    // Soft clipping to prevent harsh distortion
-    if (sample_float > MAX_AMPLITUDE) {
-      sample_float = MAX_AMPLITUDE - (MAX_AMPLITUDE - sample_float) * 0.1f;
-    } else if (sample_float < -MAX_AMPLITUDE) {
-      sample_float = -MAX_AMPLITUDE + (MAX_AMPLITUDE + sample_float) * 0.1f;
-    }
+    // Simple clipping
+    if (sample_float > MAX_AMPLITUDE) sample_float = MAX_AMPLITUDE;
+    if (sample_float < -MAX_AMPLITUDE) sample_float = -MAX_AMPLITUDE;
     
     int16_t sample_int = (int16_t)sample_float;
     i2s_buffer[i] = sample_int;     // Left channel
@@ -507,6 +580,39 @@ void loop() {
 
   size_t bytes_written = 0;
   esp_err_t result = i2s_write(I2S_NUM_0, i2s_buffer, sizeof(i2s_buffer), &bytes_written, portMAX_DELAY);
+  
+  // Calculate timing
+  uint32_t end_time = micros();
+  uint32_t write_duration = end_time - start_time;
+  if (write_duration > max_write_duration) {
+    max_write_duration = write_duration;
+  }
+  total_writes++;
+  
+  // Monitor buffer status periodically
+  uint32_t current_time = millis();
+  if (current_time - last_buffer_check >= BUFFER_CHECK_INTERVAL) {
+    last_buffer_check = current_time;
+    
+    // Check for buffer underrun
+    if (bytes_written != sizeof(i2s_buffer)) {
+      buffer_underruns++;
+      Serial.print("Buffer underrun #"); Serial.print(buffer_underruns);
+      Serial.print(": wrote "); Serial.print(bytes_written); 
+      Serial.print(" of "); Serial.println(sizeof(i2s_buffer));
+    }
+    
+    // Log timing statistics
+    Serial.print("Audio timing - Max write: "); Serial.print(max_write_duration);
+    Serial.print("us, Avg write: "); Serial.print((end_time - last_write_time) / total_writes);
+    Serial.print("us, Active notes: "); Serial.println(numActiveNotes);
+    
+    // Reset statistics
+    max_write_duration = 0;
+    total_writes = 0;
+    last_write_time = end_time;
+  }
+  
   if (result != ESP_OK) {
     Serial.print("I2S Write Error: "); Serial.println(esp_err_to_name(result));
   }
